@@ -1,0 +1,6 @@
+{
+  "name": "Doctor Tracker",
+  "description": "Enterprise Clinical Intelligence & Hospital Management Portal with real-time telemetry, doctor rosters, patient records, and performance analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

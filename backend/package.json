@@ -1,0 +1,31 @@
+{
+  "name": "doctor-tracker-backend",
+  "version": "1.0.0",
+  "description": "Doctor Tracker - Standalone Express & MongoDB REST API Backend",
+  "main": "src/server.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "tsx src/server.ts",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.10.3",
+    "tsx": "^4.21.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.14.0",
+    "typescript": "^7.0.2"
+  }
+}
