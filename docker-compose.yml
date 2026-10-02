@@ -54,6 +54,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:5000/api
+        - BACKEND_API_URL=http://backend:5000
     container_name: doctortracker-frontend
     restart: unless-stopped
     ports:

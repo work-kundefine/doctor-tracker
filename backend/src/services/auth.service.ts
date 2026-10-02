@@ -40,84 +40,57 @@ export class AuthService {
   async login(dto: LoginDTO): Promise<AuthResponseDTO> {
     const emailLower = dto.email.toLowerCase().trim();
 
+    // 1. When MongoDB is connected, strictly query MongoDB UserModel
     if (mongoose.connection.readyState === 1) {
-      try {
-        const user = await UserModel.findOne({ email: emailLower });
-        if (user) {
-          const isMatch = await user.comparePassword(dto.password);
-          if (!isMatch) {
-            throw new Error('Invalid email or password clearance code');
-          }
-          const token = this.generateToken(user, dto.rememberMe);
-          return {
-            token,
-            user: {
-              id: user._id.toString(),
-              email: user.email,
-              name: user.name,
-              role: user.role,
-              title: user.title || 'Hospital Director',
-              hospital: user.hospital || 'St. Jude Central Campus',
-              avatarUrl: user.avatarUrl,
-            },
-          };
-        }
-      } catch (err: any) {
-        if (err.message === 'Invalid email or password clearance code') throw err;
+      const user = await UserModel.findOne({ email: emailLower });
+      if (!user) {
+        throw new Error('Access denied. No registered clinical account found with this email in the MongoDB database.');
       }
+
+      const isMatch = await user.comparePassword(dto.password);
+      if (!isMatch) {
+        throw new Error('Invalid email or password clearance code.');
+      }
+
+      const token = this.generateToken(user, dto.rememberMe);
+      return {
+        token,
+        user: {
+          id: user._id.toString(),
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          title: user.title || 'Hospital Director',
+          hospital: user.hospital || 'St. Jude Central Campus',
+          avatarUrl: user.avatarUrl,
+        },
+      };
     }
 
+    // 2. When in offline simulation mode, strictly check pre-seeded accounts only
     const memUser = memoryUsers.get(emailLower);
-    if (memUser) {
-      const isMatch = bcrypt.compareSync(dto.password, memUser.passwordHash);
-      if (!isMatch && dto.password !== '••••••••••••' && dto.password !== 'password123') {
-        throw new Error('Invalid email or password clearance code');
-      }
-      const token = this.generateToken(memUser, dto.rememberMe);
-      return {
-        token,
-        user: {
-          id: memUser._id,
-          email: memUser.email,
-          name: memUser.name,
-          role: memUser.role,
-          title: memUser.title,
-          hospital: memUser.hospital,
-          avatarUrl: memUser.avatarUrl,
-        },
-      };
+    if (!memUser) {
+      throw new Error('Access denied. No registered clinical account found with this email in the database.');
     }
 
-    if (emailLower.includes('@')) {
-      const namePart = emailLower.split('@')[0].replace(/[._]/g, ' ');
-      const formattedName = 'Dr. ' + namePart.charAt(0).toUpperCase() + namePart.slice(1);
-      const newMemUser = {
-        _id: new mongoose.Types.ObjectId().toString(),
-        email: emailLower,
-        passwordHash: bcrypt.hashSync(dto.password || 'password123', 10),
-        name: formattedName,
-        role: emailLower.includes('admin') ? 'admin' : 'director',
-        title: 'Clinical Operations Director',
-        hospital: 'St. Jude Central Campus',
-        avatarUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300',
-      };
-      memoryUsers.set(emailLower, newMemUser);
-      const token = this.generateToken(newMemUser, dto.rememberMe);
-      return {
-        token,
-        user: {
-          id: newMemUser._id,
-          email: newMemUser.email,
-          name: newMemUser.name,
-          role: newMemUser.role,
-          title: newMemUser.title,
-          hospital: newMemUser.hospital,
-          avatarUrl: newMemUser.avatarUrl,
-        },
-      };
+    const isMatch = bcrypt.compareSync(dto.password, memUser.passwordHash);
+    if (!isMatch && dto.password !== '••••••••••••' && dto.password !== 'password123') {
+      throw new Error('Invalid email or password clearance code.');
     }
 
-    throw new Error('Invalid email or password clearance code');
+    const token = this.generateToken(memUser, dto.rememberMe);
+    return {
+      token,
+      user: {
+        id: memUser._id,
+        email: memUser.email,
+        name: memUser.name,
+        role: memUser.role,
+        title: memUser.title,
+        hospital: memUser.hospital,
+        avatarUrl: memUser.avatarUrl,
+      },
+    };
   }
 
   async register(dto: RegisterDTO): Promise<AuthResponseDTO> {
@@ -184,10 +157,9 @@ export class AuthService {
 
   async getMe(userId: string) {
     if (mongoose.connection.readyState === 1) {
-      try {
-        const user = await UserModel.findById(userId).select('-password');
-        if (user) return user;
-      } catch (e) {}
+      const user = await UserModel.findById(userId).select('-password');
+      if (user) return user;
+      throw new Error('User record not found in MongoDB database.');
     }
 
     for (const u of memoryUsers.values()) {
@@ -197,15 +169,7 @@ export class AuthService {
       }
     }
 
-    return {
-      _id: userId,
-      name: 'Dr. Sarah Jenkins',
-      email: 's.jenkins@stjude.org',
-      role: 'director',
-      title: 'Hospital Director',
-      hospital: 'St. Jude Central Campus',
-      avatarUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300',
-    };
+    throw new Error('User record not found in database.');
   }
 
   private generateToken(user: any, rememberMe = false): string {

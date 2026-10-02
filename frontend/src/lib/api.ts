@@ -3,7 +3,17 @@
  * Manages JWT session tokens, headers, and type-safe REST communication
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
+export function getApiBase(): string {
+  // If explicitly configured via build-time or runtime environment
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  // When running in the browser on localhost:3000, send requests directly to backend on port 5000
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port === '3000') {
+    return 'http://localhost:5000/api';
+  }
+  return '/api';
+}
 
 export function getStoredToken(): string | null {
   if (typeof window === 'undefined') return null;
@@ -56,7 +66,8 @@ async function apiRequest<T>(
   }
 
   try {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    const apiBase = getApiBase();
+    const res = await fetch(`${apiBase}${endpoint}`, {
       ...options,
       headers,
     });

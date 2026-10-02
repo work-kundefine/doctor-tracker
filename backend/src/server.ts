@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -52,8 +52,8 @@ connectDB().then((connected) => {
     console.log('[Database] Running in resilient embedded simulation mode.');
   }
 
-  app.listen(PORT, () => {
-    console.log(`🚀 Standalone Doctor Tracker Backend API running at http://localhost:${PORT}`);
+  app.listen(Number(PORT), '0.0.0.0', () => {
+    console.log(`🚀 Standalone Doctor Tracker Backend API running at http://0.0.0.0:${PORT}`);
     console.log(`📋 Clinical API docs available at http://localhost:${PORT}/`);
   });
 });
