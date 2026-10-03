@@ -166,8 +166,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="divide-y divide-[#c6c6cd]/15 flex-1 overflow-y-auto max-h-[460px]">
             {patients.length === 0 ? (
-              <div className="p-8 text-center text-[#76777d] text-[13px]">
-                No patients currently admitted in the registry.
+              <div className="p-10 text-center flex flex-col items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-[32px] text-[#c6c6cd]">personal_injury</span>
+                <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">
+                  No patients currently admitted in the registry.
+                </span>
+                {onOpenAdmitPatient && (
+                  <button
+                    type="button"
+                    onClick={onOpenAdmitPatient}
+                    className="mt-1 text-[12px] font-semibold text-[#006a61] hover:underline cursor-pointer"
+                  >
+                    + Admit First Patient
+                  </button>
+                )}
               </div>
             ) : (
               patients.map((pat) => (
@@ -239,8 +251,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="divide-y divide-[#c6c6cd]/15 flex-1 overflow-y-auto max-h-[460px]">
             {doctors.length === 0 ? (
-              <div className="p-8 text-center text-[#76777d] text-[13px]">
-                No doctors currently registered in the database.
+              <div className="p-10 text-center flex flex-col items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-[32px] text-[#c6c6cd]">stethoscope</span>
+                <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">
+                  No doctors currently registered in the database.
+                </span>
+                {onOpenRegisterDoctor && (
+                  <button
+                    type="button"
+                    onClick={onOpenRegisterDoctor}
+                    className="mt-1 text-[12px] font-semibold text-[#006a61] hover:underline cursor-pointer"
+                  >
+                    + Register First Doctor
+                  </button>
+                )}
               </div>
             ) : (
               doctors.map((doc) => (

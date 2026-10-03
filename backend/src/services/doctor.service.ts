@@ -15,8 +15,8 @@ export interface MemoryStore {
 }
 
 export const memoryStore: MemoryStore = {
-  doctors: [...initialDoctors],
-  patients: [...initialPatients],
+  doctors: [],
+  patients: [],
 };
 export const memoryDoctors: any[] = memoryStore.doctors;
 export const memoryPatients: any[] = memoryStore.patients;

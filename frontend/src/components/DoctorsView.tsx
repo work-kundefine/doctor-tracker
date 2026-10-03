@@ -142,82 +142,11 @@ export const DoctorsView: React.FC<DoctorsViewProps> = ({
             <button
               type="button"
               onClick={onOpenRegisterModal}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#000000] text-white font-['Inter'] text-[13px] font-semibold shadow-md hover:bg-[#131b2e] transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#006a61] text-white font-['Inter'] text-[13px] font-semibold shadow-md hover:bg-[#005049] transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">person_add</span>
               <span>+ Register New Doctor</span>
             </button>
-          </div>
-        </div>
-
-        {/* Quick Vital Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          <div className="bg-white rounded-2xl p-5 shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Total Active Staff</span>
-              <span className="p-2 rounded-xl bg-[#eff4ff] text-[#006a61] flex items-center justify-center">
-                <span className="material-symbols-outlined text-[18px]">groups</span>
-              </span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-['Plus_Jakarta_Sans'] text-[32px] font-bold text-[#0b1c30] tabular-nums">
-                142
-              </span>
-              <span className="font-['Inter'] text-[11px] text-[#006f66] font-bold bg-[#86f2e4]/30 px-2 py-0.5 rounded-full">
-                +6 this mo
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Active In-Shift</span>
-              <span className="p-2 rounded-xl bg-[#86f2e4]/30 text-[#006a61] flex items-center justify-center">
-                <span className="material-symbols-outlined text-[18px]">pulse_alert</span>
-              </span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-['Plus_Jakarta_Sans'] text-[32px] font-bold text-[#0b1c30] tabular-nums">
-                94
-              </span>
-              <span className="font-['Inter'] text-[12px] text-[#006a61] font-semibold">
-                66.2% On Duty
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Avg Ratio (Doc:Patient)</span>
-              <span className="p-2 rounded-xl bg-[#eff4ff] text-[#45464d] flex items-center justify-center">
-                <span className="material-symbols-outlined text-[18px]">balance</span>
-              </span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-['Plus_Jakarta_Sans'] text-[32px] font-bold text-[#0b1c30] tabular-nums">
-                1:19
-              </span>
-              <span className="font-['Inter'] text-[12px] text-[#45464d]">
-                Optimal limit: 1:24
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Pending Reviews</span>
-              <span className="p-2 rounded-xl bg-[#ffdad6]/50 text-[#93000a] flex items-center justify-center">
-                <span className="material-symbols-outlined text-[18px]">priority_high</span>
-              </span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-['Plus_Jakarta_Sans'] text-[32px] font-bold text-[#ba1a1a] tabular-nums">
-                3
-              </span>
-              <span className="font-['Inter'] text-[12px] text-[#ba1a1a] font-semibold">
-                License re-cert
-              </span>
-            </div>
           </div>
         </div>
       </div>
@@ -328,74 +257,99 @@ export const DoctorsView: React.FC<DoctorsViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#c6c6cd]/15">
-                {doctors.map((doc) => (
-                  <tr key={doc.id || doc._id} className="hover:bg-[#eff4ff]/60 transition-colors group">
-                    {/* Doctor Profile */}
-                    <td className="pl-6 pr-3 py-3.5">
-                      <div className="flex items-center gap-3">
-                        {doc.avatarUrl ? (
-                          <img
-                            src={doc.avatarUrl}
-                            alt={doc.name}
-                            className="w-10 h-10 rounded-full object-cover shadow-xs border border-[#c6c6cd]/30"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-[#dce9ff] text-[#0b1c30] font-bold text-[13px] flex items-center justify-center">
-                            MD
+                {doctors.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="py-16 text-center">
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] flex items-center justify-center text-[#006a61]">
+                          <span className="material-symbols-outlined text-[28px]">stethoscope</span>
+                        </div>
+                        <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-[16px] text-[#0b1c30]">
+                          No Doctors Found
+                        </h3>
+                        <p className="font-['Inter'] text-[13px] text-[#45464d] max-w-sm">
+                          {search ? 'No registered doctors match your search filters.' : 'There are currently no doctors registered in the database.'}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={onOpenRegisterModal}
+                          className="mt-2 flex items-center gap-2 px-4 py-2 bg-[#006a61] text-white text-[13px] font-semibold rounded-xl hover:bg-[#005049] transition-all cursor-pointer shadow-xs"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">person_add</span>
+                          <span>Register First Doctor</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  doctors.map((doc) => (
+                    <tr key={doc.id || doc._id} className="hover:bg-[#eff4ff]/60 transition-colors group">
+                      {/* Doctor Profile */}
+                      <td className="pl-6 pr-3 py-3.5">
+                        <div className="flex items-center gap-3">
+                          {doc.avatarUrl ? (
+                            <img
+                              src={doc.avatarUrl}
+                              alt={doc.name}
+                              className="w-10 h-10 rounded-full object-cover shadow-xs border border-[#c6c6cd]/30"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-[#dce9ff] text-[#0b1c30] font-bold text-[13px] flex items-center justify-center">
+                              MD
+                            </div>
+                          )}
+                          <div className="flex flex-col min-w-0">
+                            <span className="font-['Inter'] text-[14px] text-[#0b1c30] font-bold truncate group-hover:text-[#006a61] transition-colors">
+                              {doc.name}
+                            </span>
+                            <span className="font-mono text-[11px] text-[#45464d]">
+                              NPI-{doc.npi}
+                            </span>
                           </div>
-                        )}
-                        <div className="flex flex-col min-w-0">
-                          <span className="font-['Inter'] text-[14px] text-[#0b1c30] font-bold truncate group-hover:text-[#006a61] transition-colors">
-                            {doc.name}
+                        </div>
+                      </td>
+
+                      {/* Specialization */}
+                      <td className="px-3 py-3.5">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full font-['Inter'] text-[12px] bg-[#cce5ff] text-[#001d31] font-semibold">
+                          {doc.specialization}
+                        </span>
+                      </td>
+
+                      {/* Hospital Affiliation */}
+                      <td className="px-3 py-3.5">
+                        <div className="flex flex-col">
+                          <span className="font-['Inter'] text-[13px] text-[#0b1c30] font-medium">
+                            {doc.hospital}
                           </span>
-                          <span className="font-mono text-[11px] text-[#45464d]">
-                            NPI-{doc.npi}
+                          <span className="font-['Inter'] text-[12px] text-[#45464d]">
+                            {doc.suite || 'Main Clinical Wing'}
                           </span>
                         </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    {/* Specialization */}
-                    <td className="px-3 py-3.5">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full font-['Inter'] text-[12px] bg-[#cce5ff] text-[#001d31] font-semibold">
-                        {doc.specialization}
-                      </span>
-                    </td>
+                      {/* Contact Details */}
+                      <td className="px-3 py-3.5">
+                        <div className="flex flex-col font-['Inter'] text-[13px] tabular-nums">
+                          <span className="text-[#0b1c30]">{doc.phone}</span>
+                          <span className="text-[#45464d] text-[11px]">{doc.email}</span>
+                        </div>
+                      </td>
 
-                    {/* Hospital Affiliation */}
-                    <td className="px-3 py-3.5">
-                      <div className="flex flex-col">
-                        <span className="font-['Inter'] text-[13px] text-[#0b1c30] font-medium">
-                          {doc.hospital}
-                        </span>
-                        <span className="font-['Inter'] text-[12px] text-[#45464d]">
-                          {doc.suite || 'Main Clinical Wing'}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Contact Details */}
-                    <td className="px-3 py-3.5">
-                      <div className="flex flex-col font-['Inter'] text-[13px] tabular-nums">
-                        <span className="text-[#0b1c30]">{doc.phone}</span>
-                        <span className="text-[#45464d] text-[11px]">{doc.email}</span>
-                      </div>
-                    </td>
-
-                    {/* Caseload Pill (Clickable) */}
-                    <td className="px-3 py-3.5">
-                      <button
-                        type="button"
-                        onClick={() => openPatientDrawer(doc)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#86f2e4]/30 text-[#006f66] hover:bg-[#86f2e4] font-['Inter'] text-[12px] transition-colors cursor-pointer group/pill border border-[#006a61]/20 font-bold"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#006a61]"></span>
-                        <span>{doc.patientCount || 34} Patients</span>
-                        <span className="material-symbols-outlined text-[14px] group-hover/pill:translate-x-0.5 transition-transform">
-                          chevron_right
-                        </span>
-                      </button>
-                    </td>
+                      {/* Caseload Pill (Clickable) */}
+                      <td className="px-3 py-3.5">
+                        <button
+                          type="button"
+                          onClick={() => openPatientDrawer(doc)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#86f2e4]/30 text-[#006f66] hover:bg-[#86f2e4] font-['Inter'] text-[12px] transition-colors cursor-pointer group/pill border border-[#006a61]/20 font-bold"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#006a61]"></span>
+                          <span>{doc.patientCount || 0} Patients</span>
+                          <span className="material-symbols-outlined text-[14px] group-hover/pill:translate-x-0.5 transition-transform">
+                            chevron_right
+                          </span>
+                        </button>
+                      </td>
 
                     {/* Duty Status */}
                     <td className="px-3 py-3.5">
@@ -448,8 +402,9 @@ export const DoctorsView: React.FC<DoctorsViewProps> = ({
                       </div>
                     </td>
                   </tr>
-                ))}
-              </tbody>
+                ))
+              )}
+            </tbody>
             </table>
           </div>
 

@@ -19,22 +19,22 @@ export class AnalyticsService {
       } catch (e) {}
     }
 
-    const displayDoctors = Math.max(142, totalDoctors);
-    const displayPatients = Math.max(3842, totalPatients);
-    const avgRatio = Number((displayPatients / displayDoctors).toFixed(1));
+    const displayDoctors = totalDoctors;
+    const displayPatients = totalPatients;
+    const avgRatio = displayDoctors > 0 ? Number((displayPatients / displayDoctors).toFixed(1)) : 0;
 
     return {
       totalDoctors: displayDoctors,
-      doctorsGrowth: '+8 this mo',
+      doctorsGrowth: displayDoctors > 0 ? `${displayDoctors} active` : '0 active',
       totalPatients: displayPatients,
-      patientsGrowth: '+12.4% MoM',
+      patientsGrowth: displayPatients > 0 ? `${displayPatients} admitted` : '0 admitted',
       avgRatio,
-      ratioTarget: 'Target: < 30 balanced load',
-      ratioStatus: 'Optimal',
-      aggregationLatencyMs: 18,
+      ratioTarget: 'Target: balanced load',
+      ratioStatus: 'Active',
+      aggregationLatencyMs: 5,
       latencyStatus: 'Healthy',
-      clusterName: 'US-East-Primary',
-      mongoStatus: 'Live (24ms)',
+      clusterName: 'Primary Cluster',
+      mongoStatus: 'Live',
     };
   }
 

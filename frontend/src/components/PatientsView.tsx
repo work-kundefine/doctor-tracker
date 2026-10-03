@@ -199,145 +199,6 @@ export const PatientsView: React.FC<PatientsViewProps> = ({
         </div>
       </div>
 
-      {/* Live Telemetry / Census Sparklines Metric Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        {/* Active Inpatients */}
-        <div className="p-5 bg-white rounded-2xl shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Active Inpatients</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#86f2e4]/30 text-[#006f66] font-['Inter'] text-[11px] font-bold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#006a61] animate-ping"></span> Live
-            </span>
-          </div>
-          <div className="mt-2 flex items-baseline justify-between">
-            <span className="font-['Plus_Jakarta_Sans'] text-[32px] text-[#0b1c30] font-bold tracking-tight tabular-nums">
-              3,842
-            </span>
-            <span className="font-['Inter'] text-[12px] text-[#006a61] font-semibold flex items-center">
-              +4.2% today
-            </span>
-          </div>
-          <div className="mt-3 w-full h-7">
-            <svg className="w-full h-full text-[#006a61]" fill="none" viewBox="0 0 120 28">
-              <path
-                d="M0 20 L20 18 L40 22 L60 12 L80 15 L100 8 L120 14"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M0 20 L20 18 L40 22 L60 12 L80 15 L100 8 L120 14 V28 H0 Z"
-                fill="currentColor"
-                fillOpacity="0.08"
-              />
-            </svg>
-          </div>
-        </div>
-
-        {/* Critical / ICU Triage */}
-        <div className="p-5 bg-white rounded-2xl shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Critical / ICU Triage</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#ffdad6] text-[#93000a] font-['Inter'] text-[11px] font-bold">
-              High Priority
-            </span>
-          </div>
-          <div className="mt-2 flex items-baseline justify-between">
-            <span className="font-['Plus_Jakarta_Sans'] text-[32px] text-[#ba1a1a] font-bold tracking-tight tabular-nums">
-              28
-            </span>
-            <span className="font-['Inter'] text-[12px] text-[#ba1a1a] font-semibold flex items-center">
-              8 Beds Available
-            </span>
-          </div>
-          <div className="mt-3 w-full h-7">
-            <svg className="w-full h-full text-[#ba1a1a]" fill="none" viewBox="0 0 120 28">
-              <path
-                d="M0 16 L25 19 L50 9 L75 22 L95 10 L120 7"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M0 16 L25 19 L50 9 L75 22 L95 10 L120 7 V28 H0 Z"
-                fill="currentColor"
-                fillOpacity="0.08"
-              />
-            </svg>
-          </div>
-        </div>
-
-        {/* Post-Op Recovery */}
-        <div className="p-5 bg-white rounded-2xl shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Post-Op Recovery</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#dce9ff] text-[#0b1c30] font-['Inter'] text-[11px] font-semibold">
-              Wing B / C
-            </span>
-          </div>
-          <div className="mt-2 flex items-baseline justify-between">
-            <span className="font-['Plus_Jakarta_Sans'] text-[32px] text-[#0b1c30] font-bold tracking-tight tabular-nums">
-              64
-            </span>
-            <span className="font-['Inter'] text-[12px] text-[#45464d] font-medium">
-              92% Discharge ready
-            </span>
-          </div>
-          <div className="mt-3 w-full h-7">
-            <svg className="w-full h-full text-[#001d31]" fill="none" viewBox="0 0 120 28">
-              <path
-                d="M0 24 L20 20 L45 22 L65 14 L90 10 L120 9"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M0 24 L20 20 L45 22 L65 14 L90 10 L120 9 V28 H0 Z"
-                fill="currentColor"
-                fillOpacity="0.08"
-              />
-            </svg>
-          </div>
-        </div>
-
-        {/* Physician Coverage */}
-        <div className="p-5 bg-white rounded-2xl shadow-xs border border-[#c6c6cd]/30 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">Physician Coverage</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#86f2e4]/30 text-[#006f66] font-['Inter'] text-[11px] font-semibold">
-              1:8.4 Ratio
-            </span>
-          </div>
-          <div className="mt-2 flex items-baseline justify-between">
-            <span className="font-['Plus_Jakarta_Sans'] text-[32px] text-[#006a61] font-bold tracking-tight">
-              41 MDs
-            </span>
-            <span className="font-['Inter'] text-[12px] text-[#45464d] font-medium">
-              10 On-Call Rotations
-            </span>
-          </div>
-          <div className="mt-3 w-full h-7">
-            <svg className="w-full h-full text-[#006a61]" fill="none" viewBox="0 0 120 28">
-              <path
-                d="M0 12 L30 14 L55 8 L85 11 L105 5 L120 4"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M0 12 L30 14 L55 8 L85 11 L105 5 L120 4 V28 H0 Z"
-                fill="currentColor"
-                fillOpacity="0.08"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-
       {/* Filter & Search Controls Toolbar */}
       <div className="bg-white p-4 rounded-2xl shadow-xs border border-[#c6c6cd]/30 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3">
@@ -496,7 +357,32 @@ export const PatientsView: React.FC<PatientsViewProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-[#c6c6cd]/15">
-              {patients.map((pat) => {
+              {patients.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-16 text-center">
+                    <div className="flex flex-col items-center justify-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] flex items-center justify-center text-[#006a61]">
+                        <span className="material-symbols-outlined text-[28px]">personal_injury</span>
+                      </div>
+                      <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-[16px] text-[#0b1c30]">
+                        No Patients Found
+                      </h3>
+                      <p className="font-['Inter'] text-[13px] text-[#45464d] max-w-sm">
+                        {searchQuery ? 'No admitted patients match your search criteria.' : 'There are currently no patients admitted in the registry.'}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={onOpenAdmitModal}
+                        className="mt-2 flex items-center gap-2 px-4 py-2 bg-[#006a61] text-white text-[13px] font-semibold rounded-xl hover:bg-[#005049] transition-all cursor-pointer"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">person_add</span>
+                        <span>Admit First Patient</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                patients.map((pat) => {
                 const patId = pat.id || pat._id;
                 const isSelected = selectedIds.includes(patId);
                 const initials = pat.name
@@ -664,8 +550,9 @@ export const PatientsView: React.FC<PatientsViewProps> = ({
                     </td>
                   </tr>
                 );
-              })}
-            </tbody>
+              })
+            )}
+          </tbody>
           </table>
         </div>
 
@@ -673,15 +560,9 @@ export const PatientsView: React.FC<PatientsViewProps> = ({
         <div className="p-4 bg-[#eff4ff] border-t border-[#c6c6cd]/25 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="font-['Inter'] text-[12px] text-[#45464d]">
-              Showing <span className="font-bold text-[#0b1c30]">1-{patients.length}</span> of{' '}
+              Showing <span className="font-bold text-[#0b1c30]">{patients.length > 0 ? `1-${patients.length}` : '0'}</span> of{' '}
               <span className="font-bold text-[#0b1c30]">{pagination.total}</span> patients
             </span>
-            <span className="hidden lg:inline text-[#c6c6cd]">•</span>
-            {/* MongoDB Scan Telemetry Badge */}
-            <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-lg text-[#006a61] font-['Inter'] text-[11px] font-bold border border-[#c6c6cd]/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#006a61]"></span>
-              <span>MongoDB Index scan: 14ms (O(log N))</span>
-            </div>
           </div>
 
           <div className="flex items-center gap-1.5 font-['Inter'] text-[12px]">
