@@ -23,6 +23,61 @@ export function removeStoredToken() {
   }
 }
 
+export interface JwtPayload {
+  id?: string;
+  email?: string;
+  role?: string;
+  name?: string;
+  exp?: number;
+  iat?: number;
+  [key: string]: any;
+}
+
+export function parseJwt(token: string): JwtPayload | null {
+  try {
+    const base64Url = token.split('.')[1];
+    if (!base64Url) return null;
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
+
+export function isTokenExpired(token?: string | null): boolean {
+  const currentToken = token || getStoredToken();
+  if (!currentToken) return true;
+  const payload = parseJwt(currentToken);
+  if (!payload || !payload.exp) return false;
+  return Date.now() >= payload.exp * 1000;
+}
+
+export function getTokenRemainingMs(token?: string | null): number {
+  const currentToken = token || getStoredToken();
+  if (!currentToken) return 0;
+  const payload = parseJwt(currentToken);
+  if (!payload || !payload.exp) return 0;
+  const diff = payload.exp * 1000 - Date.now();
+  return diff > 0 ? diff : 0;
+}
+
+export function handleSessionExpiration(reason?: string) {
+  removeStoredToken();
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('dt:session_expired', {
+        detail: { message: reason || 'Your session has expired. Please sign in again.' },
+      })
+    );
+  }
+}
+
 export function getStoredUser(): any | null {
   if (typeof window === 'undefined') return null;
   const userJson = localStorage.getItem('dt_user_profile');
@@ -65,9 +120,8 @@ async function apiRequest<T>(
 
     if (!res.ok) {
       if (res.status === 401) {
-        // If unauthorized and endpoint isn't login/register, clear token
         if (!endpoint.includes('/auth/login') && !endpoint.includes('/auth/register')) {
-          removeStoredToken();
+          handleSessionExpiration(data.message || 'Your session has expired. Please sign in again.');
         }
       }
       return {

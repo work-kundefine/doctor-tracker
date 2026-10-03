@@ -44,12 +44,12 @@ export class AuthService {
     if (mongoose.connection.readyState === 1) {
       const user = await UserModel.findOne({ email: emailLower });
       if (!user) {
-        throw new Error('Access denied. No registered clinical account found with this email in the MongoDB database.');
+        throw new Error('Invalid email or password. Please verify your clinical credentials and try again.');
       }
 
       const isMatch = await user.comparePassword(dto.password);
       if (!isMatch) {
-        throw new Error('Invalid email or password clearance code.');
+        throw new Error('Invalid email or password. Please verify your clinical credentials and try again.');
       }
 
       const token = this.generateToken(user, dto.rememberMe);
@@ -70,12 +70,12 @@ export class AuthService {
     // 2. When in offline simulation mode, strictly check pre-seeded accounts only
     const memUser = memoryUsers.get(emailLower);
     if (!memUser) {
-      throw new Error('Access denied. No registered clinical account found with this email in the database.');
+      throw new Error('Invalid email or password. Please verify your clinical credentials and try again.');
     }
 
     const isMatch = bcrypt.compareSync(dto.password, memUser.passwordHash);
     if (!isMatch && dto.password !== '••••••••••••' && dto.password !== 'password123') {
-      throw new Error('Invalid email or password clearance code.');
+      throw new Error('Invalid email or password. Please verify your clinical credentials and try again.');
     }
 
     const token = this.generateToken(memUser, dto.rememberMe);
@@ -159,7 +159,7 @@ export class AuthService {
     if (mongoose.connection.readyState === 1) {
       const user = await UserModel.findById(userId).select('-password');
       if (user) return user;
-      throw new Error('User record not found in MongoDB database.');
+      throw new Error('User account not found or session has expired.');
     }
 
     for (const u of memoryUsers.values()) {
@@ -169,7 +169,7 @@ export class AuthService {
       }
     }
 
-    throw new Error('User record not found in database.');
+    throw new Error('User account not found or session has expired.');
   }
 
   private generateToken(user: any, rememberMe = false): string {
@@ -181,7 +181,7 @@ export class AuthService {
       title: user.title,
       hospital: user.hospital,
     };
-    const expiresIn = rememberMe ? '30d' : JWT_EXPIRES_IN;
+    const expiresIn = rememberMe ? '7d' : '24h';
     return jwt.sign(payload, JWT_SECRET, { expiresIn } as any);
   }
 }

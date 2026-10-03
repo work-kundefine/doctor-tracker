@@ -1,18 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { Sidebar } from '../../components/Sidebar';
 import { Header } from '../../components/Header';
 import { PatientsView } from '../../components/PatientsView';
 import { AdmitPatientModal } from '../../components/AdmitPatientModal';
 import { EditPatientModal } from '../../components/EditPatientModal';
 import { PatientTimelineDrawer } from '../../components/PatientTimelineDrawer';
-import { getStoredToken, getStoredUser, removeStoredToken } from '../../lib/api';
+import { useAuth } from '../../lib/auth-context';
 
 export default function PatientsPage() {
-  const router = useRouter();
-  const [currentUser, setCurrentUser] = useState<any | null>(null);
+  const { user, logout, isLoading } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCampus, setSelectedCampus] = useState('St. Jude Central Campus');
   const [isAdmitPatientOpen, setIsAdmitPatientOpen] = useState(false);
@@ -21,21 +19,6 @@ export default function PatientsPage() {
   const [isTimelineOpen, setIsTimelineOpen] = useState(false);
   const [selectedPatientForTimeline, setSelectedPatientForTimeline] = useState<any | null>(null);
   const [refreshCounter, setRefreshCounter] = useState(0);
-
-  useEffect(() => {
-    const token = getStoredToken();
-    const storedUser = getStoredUser();
-    if (!token || !storedUser) {
-      router.push('/login');
-    } else {
-      setCurrentUser(storedUser);
-    }
-  }, [router]);
-
-  const handleLogout = () => {
-    removeStoredToken();
-    router.push('/login');
-  };
 
   const handleOpenEditPatient = (patient: any) => {
     setSelectedPatientForEdit(patient);
@@ -47,21 +30,28 @@ export default function PatientsPage() {
     setIsTimelineOpen(true);
   };
 
-  if (!currentUser) return null;
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-[#f8f9ff] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-9 h-9 border-3 border-[#006a61] border-t-transparent rounded-full animate-spin"></div>
+          <span className="font-['Inter'] text-[13px] text-[#45464d] font-medium">
+            Loading Patients Registry...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <div className="w-full min-h-screen bg-[#f8f9ff] flex">
-      <Sidebar
-        currentView="patients"
-        onNavigate={(view) => {
-          if (view === 'dashboard') router.push('/');
-          else router.push(`/${view}`);
-        }}
-      />
+      <Sidebar />
       <div className="pl-72 flex-1 flex flex-col min-w-0">
         <Header
-          user={currentUser}
-          onLogout={handleLogout}
+          user={user}
+          onLogout={logout}
           onSearch={(q) => setSearchQuery(q)}
           selectedCampus={selectedCampus}
           onSelectCampus={setSelectedCampus}

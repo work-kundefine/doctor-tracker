@@ -1,15 +1,17 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { AuthGateway } from '../../components/AuthGateway';
+import { useAuth } from '../../lib/auth-context';
 
 export default function LoginPage() {
-  const router = useRouter();
+  const { login, expirationNotice } = useAuth();
 
-  const handleLoginSuccess = () => {
-    router.push('/');
+  const handleLoginSuccess = (user: any, token?: string) => {
+    if (token) {
+      login(token, user);
+    }
   };
 
-  return <AuthGateway onLoginSuccess={handleLoginSuccess} />;
+  return <AuthGateway onLoginSuccess={handleLoginSuccess} expirationNotice={expirationNotice} />;
 }

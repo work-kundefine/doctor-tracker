@@ -2,6 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Safeguard for environments where window.fetch is getter-only
+      (function () {
+        try {
+          var originalFetch = window.fetch;
+          var customFetch = originalFetch ? originalFetch.bind(window) : null;
+          Object.defineProperty(window, 'fetch', {
+            get: function () {
+              return customFetch || (originalFetch ? originalFetch.bind(window) : undefined);
+            },
+            set: function (fn) {
+              customFetch = fn;
+            },
+            configurable: true,
+            enumerable: true,
+          });
+        } catch (e) {
+          try {
+            if (typeof Window !== 'undefined' && Window.prototype) {
+              var protoFetch = Window.prototype.fetch;
+              var customProtoFetch = protoFetch ? protoFetch.bind(window) : null;
+              Object.defineProperty(Window.prototype, 'fetch', {
+                get: function () {
+                  return customProtoFetch || (protoFetch ? protoFetch.bind(window) : undefined);
+                },
+                set: function (fn) {
+                  customProtoFetch = fn;
+                },
+                configurable: true,
+                enumerable: true,
+              });
+            }
+          } catch (err) {}
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctor Tracker</title>
     <meta name="description" content="Enterprise Clinical Intelligence & Hospital Management Portal with real-time telemetry, doctor rosters, patient records, and performance analytics." />
